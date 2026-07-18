@@ -1,7 +1,7 @@
 export const site = {
   name: "Benji Peng, Ph.D.",
   headline: "Scientist & Entrepreneur",
-  url: "https://benjipeng.github.io",
+  url: "https://benji.appcubic.com",
   title: "Benji Peng, Ph.D.",
   description:
     "Benji Peng, Ph.D. — scientist & entrepreneur. Profiles and projects in one place.",
