@@ -1,0 +1,263 @@
+---
+/*
+ * Botanical poster scene, award-site motion grammar: Lenis inertial scroll
+ * feeding one scrubbed GSAP ScrollTrigger timeline. The stage (card+footer)
+ * is fixed; the 250vh scroll track exists purely to drive the story.
+ *
+ * Depth sandwich: quiet geometry (disc/ring, slowest) → pale deep plants →
+ * dark near plants → content → one blurred foreground frond crossing in
+ * front (desktop only). Content participates subtly: the hero and each link
+ * row drift at staggered rates on yPercent (entrance animates y/opacity —
+ * separate channels, no conflict).
+ *
+ * Silhouettes: PhyloPic, CC0. Colors come from the green/warm tokens via
+ * a CSS fill override, so both themes restyle the whole scene.
+ */
+import adiantum from "../scene-assets/adiantum.svg?raw";
+import frond from "../scene-assets/polypodium-frond.svg?raw";
+import ginkgo from "../scene-assets/ginkgo.svg?raw";
+import osmunda from "../scene-assets/osmunda.svg?raw";
+import vulgare from "../scene-assets/polypodium-vulgare.svg?raw";
+---
+
+<div class="scene" aria-hidden="true">
+  <div class="shape shape-disc" data-plant="disc"></div>
+  <div class="shape shape-ring" data-plant="ring"></div>
+  <div class="plant plant-osmunda" data-plant="osmunda" set:html={osmunda} />
+  <div class="plant plant-fern" data-plant="fern" set:html={vulgare} />
+  <div class="plant plant-frond" data-plant="frond" set:html={frond} />
+  <div class="plant plant-frond2" data-plant="frond2" set:html={frond} />
+  <div class="plant plant-ginkgo" data-plant="ginkgo" set:html={ginkgo} />
+  <div class="plant plant-adiantum" data-plant="adiantum" set:html={adiantum} />
+  <div class="plant plant-crosser" data-plant="crosser" set:html={frond} />
+  <div class="grain"></div>
+</div>
+
+<style>
+  .plant,
+  .shape {
+    position: fixed;
+    z-index: -1;
+    pointer-events: none;
+    will-change: transform, opacity;
+  }
+
+  .plant :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .plant :global(:is(path, g, ellipse, circle, polygon)) {
+    fill: var(--plant-fill);
+  }
+
+  /* quiet geometry, slowest layer */
+  .shape-disc {
+    left: -14vw;
+    bottom: -18vh;
+    width: 44vw;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--warm) 12%, var(--bg));
+  }
+
+  .shape-ring {
+    right: -6vw;
+    top: -14vh;
+    width: 30vw;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1.5px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+
+  /* left mass: deep fern over pale osmunda, cropped by the frame */
+  .plant-fern {
+    --plant-fill: var(--green-1);
+    left: -7vw;
+    bottom: -12vh;
+    width: clamp(300px, 34vw, 600px);
+  }
+
+  .plant-osmunda {
+    --plant-fill: var(--green-4);
+    left: -10vw;
+    bottom: 14vh;
+    width: clamp(280px, 32vw, 560px);
+  }
+
+  .plant-osmunda :global(svg) {
+    transform: rotate(24deg);
+  }
+
+  .plant-adiantum {
+    --plant-fill: var(--green-3);
+    left: 2vw;
+    top: -4vh;
+    width: clamp(130px, 14vw, 230px);
+  }
+
+  .plant-adiantum :global(svg) {
+    transform: rotate(160deg);
+  }
+
+  /* right mass: two fronds framing the golden ginkgo */
+  .plant-frond {
+    --plant-fill: var(--green-2);
+    right: -8vw;
+    top: 2vh;
+    width: clamp(300px, 33vw, 580px);
+  }
+
+  .plant-frond :global(svg) {
+    transform: scale(-1, 1) rotate(-38deg);
+  }
+
+  .plant-frond2 {
+    --plant-fill: var(--green-1);
+    right: -7vw;
+    bottom: -6vh;
+    width: clamp(280px, 30vw, 540px);
+  }
+
+  .plant-frond2 :global(svg) {
+    transform: scale(-1, -1) rotate(-24deg);
+  }
+
+  .plant-ginkgo {
+    --plant-fill: var(--warm);
+    right: 6vw;
+    bottom: 26vh;
+    width: clamp(180px, 20vw, 350px);
+  }
+
+  .plant-ginkgo :global(svg) {
+    transform: rotate(-14deg);
+  }
+
+  /* foreground plane: blurred frond crossing in front of the content */
+  .plant-crosser {
+    --plant-fill: var(--green-1);
+    right: -12vw;
+    bottom: -14vh;
+    width: clamp(340px, 38vw, 680px);
+    z-index: 5;
+    filter: blur(2.5px);
+    opacity: 0.92;
+    display: none;
+  }
+
+  .plant-crosser :global(svg) {
+    transform: scale(-1, -1) rotate(-16deg);
+  }
+
+  @media (min-width: 1024px) {
+    .plant-crosser {
+      display: block;
+    }
+  }
+
+  .grain {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    opacity: var(--grain-alpha);
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='280' height='280' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  @media (max-width: 720px) {
+    .plant-osmunda,
+    .plant-adiantum,
+    .shape-ring {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .plant,
+    .shape {
+      transform: none !important;
+    }
+
+    .plant-crosser {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  import Lenis from "lenis";
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const lenis = new Lenis();
+    lenis.on("scroll", ScrollTrigger.update);
+    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+
+    /* entrance — time-based, y/opacity channel */
+    gsap.from(".card header", { y: 18, autoAlpha: 0, duration: 0.7, ease: "power2.out" });
+    gsap.from(".links .link", {
+      y: 16,
+      autoAlpha: 0,
+      duration: 0.55,
+      stagger: 0.06,
+      delay: 0.15,
+      ease: "power2.out",
+    });
+
+    /* scroll story — one scrubbed timeline, xPercent/yPercent channel */
+    const tl = gsap.timeline({
+      defaults: { ease: "none" },
+      scrollTrigger: {
+        trigger: ".scroll-track",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 1.2,
+      },
+    });
+
+    tl.fromTo('[data-plant="fern"]', { xPercent: -55, rotation: -8 }, { xPercent: 0, rotation: 0 }, 0)
+      .fromTo(
+        '[data-plant="osmunda"]',
+        { xPercent: -80, yPercent: 8, scale: 0.88, autoAlpha: 0.1 },
+        { xPercent: 0, yPercent: 0, scale: 1, autoAlpha: 1 },
+        0,
+      )
+      .to('[data-plant="adiantum"]', { yPercent: -140, autoAlpha: 0 }, 0)
+      .fromTo(
+        '[data-plant="frond"]',
+        { xPercent: 65, yPercent: -12, rotation: 12 },
+        { xPercent: 0, yPercent: 0, rotation: 0 },
+        0,
+      )
+      .fromTo(
+        '[data-plant="frond2"]',
+        { xPercent: 70, yPercent: 20, rotation: -10 },
+        { xPercent: 0, yPercent: 0, rotation: 0 },
+        0,
+      )
+      .fromTo(
+        '[data-plant="ginkgo"]',
+        { xPercent: 90, rotation: 22, autoAlpha: 0.15 },
+        { xPercent: 0, rotation: 0, autoAlpha: 1 },
+        0,
+      )
+      .fromTo('[data-plant="disc"]', { xPercent: -10 }, { xPercent: 4 }, 0)
+      .fromTo('[data-plant="ring"]', { xPercent: 14, yPercent: -8 }, { xPercent: -4, yPercent: 2 }, 0)
+      .fromTo(
+        '[data-plant="crosser"]',
+        { xPercent: 45, yPercent: 18, rotation: -4 },
+        { xPercent: -60, yPercent: -6, rotation: 8 },
+        0,
+      )
+      .to(".card header", { yPercent: -12 }, 0)
+      .to(".links .link", { yPercent: (i: number) => -(20 + i * 14) }, 0)
+      .to(".scroll-hint", { autoAlpha: 0, duration: 0.2 }, 0);
+  }
+</script>
