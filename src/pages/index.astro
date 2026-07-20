@@ -1,47 +1,170 @@
 ---
-import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import LinkButton from "../components/LinkButton.astro";
-import Scene from "../components/Scene.astro";
-import ThemeToggle from "../components/ThemeToggle.astro";
-import { site, links } from "../data/site";
-import avatar from "../assets/benji.webp";
-
-const year = new Date().getFullYear();
 ---
 
 <BaseLayout>
-  <ThemeToggle />
-  <Scene />
-  <div class="scroll-track">
-    <div class="stage">
-      <main>
-    <article class="card">
-      <header>
-        <div class="avatar-frame">
-          <span class="avatar-clip">
-            <Image class="avatar" src={avatar} alt={site.name} width={216} height={216} />
-          </span>
+  <canvas id="cube-stage"></canvas>
+  <div class="vignette" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="top">
+    <span class="brand">APPCUBIC<span class="reg">®</span></span>
+    <nav>
+      <a href="#practice">Practice</a>
+      <a href="#exhibits">Exhibits</a>
+      <a href="#channels">Channels</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="top">
+      <div class="issue mono dim">
+        <span>AI Design Studio</span>
+        <span>Vol. 04 — <span class="acc">2026</span></span>
+      </div>
+      <h1 class="word" aria-label="APPCUBIC">
+        <span class="ch">A</span><span class="ch">P</span><span class="ch">P</span><span class="ch alt">C</span><span class="ch alt">U</span><span class="ch alt">B</span><span class="ch">I</span><span class="ch">C</span>
+      </h1>
+      <div class="sub">
+        <p class="tag">The studio for <b>agentic systems</b> — designed, not prompted.</p>
+        <p class="mono dim">South East Coast, USA<br />Est. MMXXIV</p>
+      </div>
+      <div class="scroll-cue mono dim"><span>Scroll</span><span class="line"></span></div>
+    </section>
+
+    <!-- ============ MANIFESTO ============ -->
+    <section class="manifesto" id="manifesto">
+      <p class="m-line"><span>Research-grade AI,</span></p>
+      <p class="m-line"><span>made <em>runnable.</em></span></p>
+      <p class="m-line"><span>Design is the <em>interface</em></span></p>
+      <p class="m-line"><span>of intelligence.</span></p>
+      <div class="m-meta mono dim">
+        <span>— Studio doctrine</span>
+        <span class="acc">§01</span>
+      </div>
+    </section>
+
+    <!-- ============ PRACTICE ============ -->
+    <section class="practice" id="practice">
+      <div class="section-head mono dim">
+        <span>Practice — <span class="acc">four disciplines</span></span>
+        <span>Hover to preview</span>
+      </div>
+      <div class="rows">
+        <a class="p-row" href="https://appautomaton.github.io" target="_blank" rel="noopener" data-img="/img/metal-shapes.jpg">
+          <span class="idx mono">/01</span>
+          <h3>Agent <em>workflows</em></h3>
+          <span class="arr">↗</span>
+        </a>
+        <a class="p-row" href="https://appautomaton.github.io" target="_blank" rel="noopener" data-img="/img/chrome-knot.jpg">
+          <span class="idx mono">/02</span>
+          <h3>MLX <em>models</em></h3>
+          <span class="arr">↗</span>
+        </a>
+        <a class="p-row" href="https://research.appcubic.com" target="_blank" rel="noopener" data-img="/img/chrome-splash.jpg">
+          <span class="idx mono">/03</span>
+          <h3>Evaluation <em>loops</em></h3>
+          <span class="arr">↗</span>
+        </a>
+        <a class="p-row" href="https://www.appcubic.com" target="_blank" rel="noopener" data-img="/img/chrome-bow.jpg">
+          <span class="idx mono">/04</span>
+          <h3>Venture <em>systems</em></h3>
+          <span class="arr">↗</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ============ EXHIBITS ============ -->
+    <section class="exhibits" id="exhibits">
+      <div class="pin-head section-head mono dim">
+        <span>Selected exhibits — <span class="acc">the workshop floor</span></span>
+        <span>Scroll drives →</span>
+      </div>
+      <div class="track">
+        <figure class="panel">
+          <span class="num">01</span>
+          <div class="fig"><img src="/img/metal-shapes.jpg" alt="Metallic abstract shapes" loading="lazy" /></div>
+          <h3>App <em>Automaton</em></h3>
+          <p>The open workshop — MIT, in public</p>
+        </figure>
+        <figure class="panel">
+          <span class="num">02</span>
+          <div class="fig"><img src="/img/arch-shadow.jpg" alt="Architectural shadows" loading="lazy" /></div>
+          <h3>Document <em>skills</em></h3>
+          <p>LaTeX · slides · pipelines for agents</p>
+        </figure>
+        <figure class="panel">
+          <span class="num">03</span>
+          <div class="fig"><img src="/img/chrome-splash.jpg" alt="Liquid chrome splash" loading="lazy" /></div>
+          <h3>Agent <em>designer</em></h3>
+          <p>Multi-agent orchestration tooling</p>
+        </figure>
+        <figure class="panel">
+          <span class="num">04</span>
+          <div class="fig"><img src="/img/chrome-knot.jpg" alt="Liquid chrome knot" loading="lazy" /></div>
+          <h3>MLX <em>models</em></h3>
+          <p>Pure-MLX, Apple Silicon native</p>
+        </figure>
+        <figure class="panel">
+          <span class="num">05</span>
+          <div class="fig"><img src="/img/film-gradient.jpg" alt="Abstract film gradient" loading="lazy" /></div>
+          <h3>Research <em>systems</em></h3>
+          <p>Repeatable science, dependable runs</p>
+        </figure>
+        <figure class="panel endcap">
+          <p class="big">Every artifact <em>ships.</em></p>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ============ CHANNELS ============ -->
+    <section class="channels" id="channels">
+      <div class="section-head mono dim">
+        <span>Channels — <span class="acc">where the studio lives</span></span>
+        <span>(05)</span>
+      </div>
+      <div class="c-rows">
+        <a class="c-row" href="https://www.appcubic.com" target="_blank" rel="noopener">
+          <span class="name">App<em>Cubic</em> — studio</span><span class="url mono">appcubic.com ↗</span>
+        </a>
+        <a class="c-row" href="https://appautomaton.github.io" target="_blank" rel="noopener">
+          <span class="name">App <em>Automaton</em> — workshop</span><span class="url mono">appautomaton.github.io ↗</span>
+        </a>
+        <a class="c-row" href="https://research.appcubic.com" target="_blank" rel="noopener">
+          <span class="name">Research <em>systems</em></span><span class="url mono">research.appcubic.com ↗</span>
+        </a>
+        <a class="c-row" href="https://github.com/appautomaton" target="_blank" rel="noopener">
+          <span class="name">Git<em>Hub</em> — open source</span><span class="url mono">github.com/appautomaton ↗</span>
+        </a>
+        <a class="c-row" href="https://benji.appcubic.com" target="_blank" rel="noopener">
+          <span class="name">The <em>card</em></span><span class="url mono">benji.appcubic.com ↗</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer>
+      <div class="marquee" aria-hidden="true">
+        <div class="mtrack">
+          <span>Agentic systems</span><span class="s">✳</span><span>Made runnable</span><span class="s">✳</span><span>MIT, in public</span><span class="s">✳</span>
+          <span>Agentic systems</span><span class="s">✳</span><span>Made runnable</span><span class="s">✳</span><span>MIT, in public</span><span class="s">✳</span>
         </div>
-        <h1>{site.name}</h1>
-        <p class="eyebrow">{site.headline}</p>
-      </header>
-      <nav class="links" aria-label="Profiles">
-        {links.map((link) => <LinkButton {...link} />)}
-      </nav>
-    </article>
-      </main>
-      <footer>
-        <p>&copy; {year} {site.name}</p>
-        <p class="attribution">
-          Built with <a href="https://appautomaton.github.io" target="_blank" rel="noopener noreferrer">AppAutomaton</a> by <a href="https://www.appcubic.com" target="_blank" rel="noopener noreferrer">AppCubic</a>
-        </p>
-      </footer>
-    </div>
-  </div>
-  <div class="scroll-hint" aria-hidden="true">
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-      <path d="m4 5.5 4 4 4-4" />
-    </svg>
-  </div>
+      </div>
+      <p class="ghost">APPCUBIC</p>
+      <div class="meta mono dim">
+        <span>© 2026 AppCubic — an AI design studio</span>
+        <span>Rendered live — <a href="#top">the hypercube ↑</a></span>
+      </div>
+    </footer>
+  </main>
+
+  <img class="float-img" id="floatImg" alt="" aria-hidden="true" />
+
+  <script>
+    import "../scripts/hypercube.js";
+  </script>
+  <script>
+    import "../scripts/choreo.js";
+  </script>
 </BaseLayout>
